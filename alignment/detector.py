@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image
 from retinaface_pytorch.retinaface import load_retinaface_mbnet, RetinaFace_MobileNet
 from retinaface_pytorch.utils import RetinaFace_Utils
-from RetinaFace_Mx.align_trans import get_reference_facial_points, warp_and_crop_face
+from retinaface_pytorch.align_trans import get_reference_facial_points, warp_and_crop_face
 class Retinaface_Detector(object):
     def __init__(self, device = None, thresh = 0.6, scales = [320, 480]):
         self.target_size = scales[0]
@@ -16,15 +16,16 @@ class Retinaface_Detector(object):
         self.threshold = thresh
         if device:
             # assert device in
-            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+            self.device = device
         else:
             self.device = torch.device("cpu")
         self.model = RetinaFace_MobileNet()
-        checkpoint = torch.load('retinaface_pytorch/checkpoint.pth')
+        self.model = self.model.to(self.device)
+        checkpoint = torch.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retinaface_pytorch/checkpoint.pth'))
         self.model.load_state_dict(checkpoint['state_dict'])
         del checkpoint
         # self.model = load_retinaface_mbnet('retinaface_pytorch/mnet.25').to(device)
-        self.model = self.model.to(device)
+        
         self.model.eval()
         self.pixel_means = np.array([0.0, 0.0, 0.0], dtype=np.float32)
         self.pixel_stds = np.array([1.0, 1.0, 1.0], dtype=np.float32)
@@ -74,7 +75,7 @@ class Retinaface_Detector(object):
 import time
 if __name__ == '__main__':
     reti = Retinaface_Detector()
-    img = cv2.imread("t6.jpg")
+    img = cv2.imread("t2.jpg")
     t = time.time()
     for i in range(10):
         bboxs, faces = reti.align_multi(img)

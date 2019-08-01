@@ -30,11 +30,9 @@ class face_recognize(object):
             self.mtcnn = MTCNN(conf.device, thresholds = [0.5, 0.7, 0.8])
             self.use_mtcnn = True
         else:
-            from alignment.retinaface import RetinaFace
-            gpu = -1
-            if not str(conf.device) == 'cpu':
-                gpu = 0
-            self.mtcnn = RetinaFace(gpu_id = 0, thresh = 0.6, scales = [320, 480])
+            from alignment.detector import Retinaface_Detector
+            self.mtcnn = Retinaface_Detector(device = conf.device, thresh = 0.6, scales = [320, 640])
+            self.use_mtcnn = False
             self.use_mtcnn = False
 
         # self.anti_spoofing = Smoofing()

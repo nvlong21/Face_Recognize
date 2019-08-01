@@ -29,7 +29,7 @@ if __name__ == '__main__':
     link_cam = 'rtsp://admin:a1b2c3d4@@10.0.20.226:554/profile2/media.smp'
 
     args = parser.parse_args()
-    conf = get_config(net_mode = 'mobi', threshold = args.threshold, detect_id = 1)
+    conf = get_config(net_mode = 'ir_se', threshold = args.threshold, detect_id = 1)
     face_recognize = face_recognize(conf)
     if args.update:
         targets, names = face_recognize.update_facebank()
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     if (not isinstance(targets, torch.Tensor)) and face_recognize.use_tensor:
         targets, names = face_recognize.update_facebank()
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('video.mp4')
     # cap = cv2.VideoCapture(args.file_name)
 
     cap.set(cv2.CAP_PROP_POS_MSEC, args.begin* 1000)
@@ -54,6 +54,7 @@ if __name__ == '__main__':
         i = 0
     count = 0
     while cap.isOpened():
+        t = time.time()
         isSuccess, frame = cap.read()
         if isSuccess:
             img_bg = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -84,6 +85,7 @@ if __name__ == '__main__':
                 break  
         else:
             break
+        print(time.time() -t)
         if args.duration != 0:
             i += 1
             if i % 25 == 0:
