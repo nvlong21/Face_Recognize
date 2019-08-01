@@ -1,0 +1,220 @@
+/* ----- General ----- */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, sans-serif;
+	color: #935347;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+
+/* ----- Nav ----- */
+
+nav {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	background-color: #64706c;
+	color: #ede9ce;
+	font-family: HelveticaNeue-Light, sans-serif;
+	font-size: x-large;
+}
+
+nav a {
+	flex-grow: 1;
+	text-align: center;
+	padding: .3em;
+}
+
+nav a:hover {
+	background-color: #9fa8a3;
+}
+
+
+/* ----- Headings ----- */
+
+h1, h2, h3 {
+	padding: .3em 1em;
+	background-color: #ede9ce;
+	color: #935347;
+}
+
+.season {
+	background-color: #ecd9bd;
+}
+
+
+/* ----- Lists ----- */
+
+ul {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	font-size: large;
+	margin: 0;
+	padding: 1em;
+}
+
+li {
+	padding: 1em;
+	margin: .2em;
+	text-align: center;
+	background-color: #ede9ce;
+	color: #935347;
+}
+
+ul a {
+	flex-grow: 1;
+}
+
+li:hover {
+	background-color: #935347;
+	color: #ede9ce;
+}
+
+.movie-item, .show-item {
+	margin: .3em;
+}
+
+
+/* ----- Item Pages ----- */
+
+video {
+	width: 80vw;
+	margin: 2vh 10vw;
+	background-color: #ecd9bd;
+}
+
+.edit-metadata {
+	text-align: center;
+	padding-top: 2vh;
+	margin: 2vh 5vw;
+	color: #935347;
+}
+
+.edit-metadata a {
+	background-color: #ecd9bd;
+	padding: .5em;
+}
+
+.edit-metadata a:hover {
+	background-color: #935347;
+	color: #ecd9bd;
+}
+
+
+/* ----- Edit Metadata ----- */
+
+.metadata-form {
+	margin: 5vh 5vw;
+}
+
+.metadata-form label, .uneditable-label {
+	color: #935347;
+	background-color: #ecd9bd;
+	padding: .2em .5em;
+	font-size: large;
+}
+
+.metadata-form input[type="text"], input[type="number"], .uneditable-content {
+	width: 100%;
+	font-size: medium;
+	color: inherit;
+	margin: 2vh 1vw 4vh;
+	box-sizing: border-box;
+}
+
+.metadata-form input[type="submit"] {
+	border: none;
+	background-color: #935347;
+	color: #ecd9bd;
+	font-size: medium;
+}
+
+.metadata-error {
+	margin: 0 5%;
+}
+
+
+/* ----- Settings ----- */
+
+.settings-buttons {
+	display: flex;
+	justify-content: center;
+	padding: 1em 2em;
+}
+
+.settings-button {
+	flex: 1 1 25%;
+	padding: .8em 1em;
+	margin: 0 5%;
+	border: none;
+	cursor: pointer;
+	background-color: #935347;
+	color: #fff;
+	font-size: medium;
+}
+
+.settings-button:hover {
+	background-color: #ede9ce;
+	color: #935347;
+}
+
+.media-path {
+	margin: 0 1.5em;
+	word-wrap: break-word;
+	font-family: monospace;
+}
+
+.dialog {
+	border: 2px solid #64706c;
+	padding: 0;
+	width: 80vw;
+}
+
+.dialog-heading {
+	text-align: center;
+}
+
+.form-fields {
+	padding: 0 1em;
+}
+
+.form-fields label {
+	background-color: #ecd9bd;
+	margin: 1.5em 0 .5em;
+	padding: .5em 0;
+	text-align: center;
+	display: block;
+	width: 100%;
+}
+
+.form-fields > input, .form-fields > select {
+	padding: 0;
+	border: 1px solid #935347;
+	border-radius: 0;
+	display: block;
+	width: 99%;
+	margin-bottom: 2em;
+}
+
+input[type="submit"] {
+	-webkit-appearance: none;
+}
+
+#error-message {
+	margin: 1% 4%;
+}
+
+@media (min-width: 500px) {
+
+	.dialog {
+		width: 450px;
+	}
+
+}

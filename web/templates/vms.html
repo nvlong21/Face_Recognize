@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <title>Video Streaming Demonstration</title>
+  </head>
+  <body>
+    <h1>Video Streaming Demonstration</h1>
+    {% for each_camera in cameras %}
+		<img width="400" height="400" src="/video_feed/opencv/{{each_camera}}">
+		{% endfor %}
+<!-- 		<img src="/video_feed/picamera/0"> -->
+  </body>
+</html>

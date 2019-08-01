@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Object Detection</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js')}}"></script>
+</head>
+
+<body onload="d_load()">
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    {% from "_formhelpers.html" import render_field %}
+    <div class="card">
+        <div class="card-header text-left display-4 p-3 mb-2 bg-dark text-white">
+            Face detect and recognize
+        </div>
+        <div class="card-body container">
+            <div class="tab">
+                <button class="tablinks" onclick="openAct(event, 'image')" id="imgOpen">Image</button>
+                <button class="tablinks" onclick="openAct(event, 'video')" id="vidOpen">Video</button>
+                <button class="tablinks" onclick="openAct(event, 'compare')" id="comPare">Compare two image</button>
+                <button class="tablinks" onclick="openAct(event, 'realtime')" id="realOpen">Realtime</button>
+                <!-- <button class="tablinks" onclick="openAct(event, 'voicerec')" id="voiceOpen">Voice</button> -->
+            </div>
+            <div id="image" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                <h3>Image </h3>
+                <h3>Upload a color photo file.</h3>
+                <div>
+                    <form id="upload" method=post action={{ url_for( 'imgproc') }} enctype="multipart/form-data">
+                        {{ render_field(photo_form.input_photo) }}
+                        <p><input type="button" onclick="WaitDisplay('upload'); openAct(event, 'image');" value="Upload" class="btn btn-primary"></p>
+                    </form>
+                </div>
+                <hr>
+
+                <div id="result">
+                    {% if result|length > 0 %}
+                    <div id="label" class="lead">
+                        original
+                    </div>
+                    <div>
+                        <img id="photo" src="{{ result['original'] }}" align="left" hspace="10" vspace="10" class="img-thumbnail">
+                    </div>
+                    <p class="lead">
+                        <a href="javascript:void(0);" onclick="ChangePhoto('original', '{{ result['original'] }}');">original</a>
+                        </br>
+                        {% for name, img in result.items() %} {% if name != 'original' %}
+                        <a href="javascript:void(0);" onclick="ChangePhoto('{{ name }}', '{{ result[ name ] }}');">{{ name }}</a>
+                        </br>
+                        {% endif %} {% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                <div id="loading" style="display:none">
+                    <h2>Waiting...</h2>
+                </div>
+            </div>
+             <div id="compare" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                <h3>compare two image</h3>
+                <p>.</p>
+                <h3>Upload a color photo file.</h3>
+                <div class="wrapper row">
+                    <div class="col-md-4">
+                        <div class="box">
+                            <img id="img_1" src="" class="js--image-preview">
+                            
+                            <div class="upload-options">
+                            <label>
+                                <input type="file" class="image-upload" accept="image/*" />
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center" id = "result_compare">
+
+                        <h3></h3>
+
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box">
+                            <img id="img_2" src="" class="js--image-preview">
+                            <div class="upload-options">
+                                <label>
+                                    <input type="file" class="image-upload" accept="image/*" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div>
+                    <p><input id ="compare_submit" type="button" onclick="compare();" value="Upload" class="btn btn-primary"></p>
+                </div>
+
+                        </div>
+                       
+                    </div>
+                </div>
+                <div id="loading" style="display:none">
+                    <h2>Waiting...</h2>
+                </div>
+            </div>
+            <div id="video" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                <h3>Video - Face detection and recognize</h3>
+                <div>
+                    <form id="vidupload" method=post action={{ url_for( 'vidproc') }} enctype="multipart/form-data">
+                        {{ render_field(video_form.input_video) }}
+                        <p><input type="button" onclick="WaitDisplay('vidupload');" value="Upload" class="btn btn-primary"></p>
+                    </form>
+                </div>
+                <hr>
+
+            </div>
+            <div id="realtime" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                <h3>VMS</h3>
+                <p></p>
+                <div>
+                    <form id="real" method=post action={{ url_for( 'realproc') }}>
+                        <p><input type="button" name="realstop" onclick="WaitDisplay('real');" value="Start Web Cam" class="btn btn-primary"></p>
+                    </form>
+                </div>
+            </div>
+            <div id="voicerec" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                <h3></h3>
+                <p></p>
+                <div>
+                    <form id="rstop" method=post action={{ url_for( 'realstop') }}>
+                        <p><input type="submit" name="realstop" onclick="WaitDisplay('rstop');" value="Start Web Cam" class="btn btn-primary"></p>
+                        <p><input type="submit" name="realstop" onclick="WaitDisplay('rstop');" value="Stop Web Cam" class="btn btn-primary"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item"><a class="btn btn-bd-blue" href="https://github.com/anoopjeerige/realtimeCV">GitHub</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+    <script type="text/javascript">
+
+        function initImageUpload(box) {
+          let uploadField = box.querySelector('.image-upload');
+
+          uploadField.addEventListener('change', getFile);
+
+          function getFile(e){
+            let file = e.currentTarget.files[0];
+            checkType(file);
+          }
+          
+          function previewImage(file){
+            let thumb = box.querySelector('.js--image-preview'),
+                reader = new FileReader();
+
+
+            reader.onload = function() {
+                thumb.src = reader.result;
+              // thumb.style.backgroundImage = 'url(' + reader.result + ')';
+
+            }
+            reader.readAsDataURL(file);
+            thumb.className += ' js--no-default';
+          }
+
+          function checkType(file){
+            let imageType = /image.*/;
+            if (!file.type.match(imageType)) {
+              throw 'Datei ist kein Bild';
+            } else if (!file){
+              throw 'Kein Bild gewählt';
+            } else {
+              previewImage(file);
+            }
+          }
+          
+        }
+
+        // initialize box-scope
+        var boxes = document.querySelectorAll('.box');
+
+        for(let i = 0; i < boxes.length; i++) {if (window.CP.shouldStopExecution(1)){break;}
+          let box = boxes[i];
+          initDropEffect(box);
+          initImageUpload(box);
+        }
+        window.CP.exitedLoop(1);
+
+        /// drop-effect
+        function initDropEffect(box){
+          let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
+          
+          // get clickable area for drop effect
+          area = box.querySelector('.js--image-preview');
+          area.addEventListener('click', fireRipple);
+          
+          function fireRipple(e){
+            area = e.currentTarget
+            // create drop
+            if(!drop){
+              drop = document.createElement('span');
+              drop.className = 'drop';
+              this.appendChild(drop);
+            }
+            // reset animate class
+            drop.className = 'drop';
+            
+            // calculate dimensions of area (longest side)
+            areaWidth = getComputedStyle(this, null).getPropertyValue("width");
+            areaHeight = getComputedStyle(this, null).getPropertyValue("height");
+            maxDistance = Math.max(parseInt(areaWidth, 10), parseInt(areaHeight, 10));
+
+            // set drop dimensions to fill area
+            drop.style.width = maxDistance + 'px';
+            drop.style.height = maxDistance + 'px';
+            
+            // calculate dimensions of drop
+            dropWidth = getComputedStyle(this, null).getPropertyValue("width");
+            dropHeight = getComputedStyle(this, null).getPropertyValue("height");
+            
+            // calculate relative coordinates of click
+            // logic: click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center
+            x = e.pageX - this.offsetLeft - (parseInt(dropWidth, 10)/2);
+            y = e.pageY - this.offsetTop - (parseInt(dropHeight, 10)/2) - 30;
+            
+            // position drop and animate
+            drop.style.top = y + 'px';
+            drop.style.left = x + 'px';
+            drop.className += ' animate';
+            e.stopPropagation();
+            
+          }
+        }
+    </script>
+</body>
+
+</html>

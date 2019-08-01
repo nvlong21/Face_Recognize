@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
+
+<head>
+<meta c="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Media Server{% endblock title %}</title>
+<link rel="stylesheet" href="/static/base.css">
+<link rel="apple-touch-icon" href="/static/touchicon.png">
+{% block head %}{% endblock head %}
+</head>
+
+<body>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/realtime">Movies</a>
+		<a href="/tv_shows">TV Shows</a>
+		<a href="/settings">Settings</a>
+	</nav>
+	{% block header %}{% endblock header %}
+	<main>{% block content %}{% endblock content %}</main>
+</body>
+</html>

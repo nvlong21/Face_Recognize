@@ -1,0 +1,6 @@
+certifi==2018.8.24
+numpy==1.15.2
+opencv-contrib-python==3.4.3.18
+opencv-python==3.4.3.18
+PyQt5==5.11.3
+PyQt5-sip==4.19.13

@@ -1,0 +1,6 @@
+version: '2'
+services:
+  face_recognition:
+    build: .
+    ports:
+     - "8084:8084"
