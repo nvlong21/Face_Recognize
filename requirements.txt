@@ -1,5 +1,5 @@
 certifi==2018.8.24
-opencv-contrib-python==3.4.3.18
+opencv-contrib-python==4.2.0.32
 pandas
 torch>=0.4.1
 numpy>=1.14.5
